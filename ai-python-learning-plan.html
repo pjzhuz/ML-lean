@@ -180,6 +180,13 @@ mark.key {
   background: rgba(255,255,255,0.6);
   border-radius: 10px;
   border: 1px solid var(--rule);
+  transition: transform 0.15s, box-shadow 0.15s, border-color 0.15s;
+  cursor: pointer;
+}
+.timeline-item:hover {
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  border-color: var(--accent);
 }
 .timeline-item::before {
   content: '';
@@ -1095,6 +1102,64 @@ graph TB
 <script src="./_shared/js/mermaid.min.js"></script>
 <script>
 mermaid.initialize({ startOnLoad: true, theme: 'neutral', securityLevel: 'loose' });
+</script>
+
+<script>
+// ===== 跳转到每日学习页面 =====
+(function() {
+  // 6周对应第一天
+  var weekFirstDays = [1, 8, 15, 22, 29, 36];
+
+  // 18个教材章节对应第一天
+  var chapterFirstDays = [
+    1,   // 第1章 绪论
+    2,   // 第2章 Python入门
+    5,   // 第3章 数学回顾
+    8,   // 第4章 线性回归
+    10,  // 第5章 逻辑回归
+    12,  // 第6章 多项逻辑回归
+    15,  // 第7章 判别分析
+    17,  // 第8章 朴素贝叶斯
+    19,  // 第9章 惩罚回归
+    22,  // 第10章 K近邻法
+    24,  // 第11章 决策树
+    26,  // 第12章 随机森林
+    29,  // 第13章 提升法
+    31,  // 第14章 支持向量机
+    33,  // 第15章 人工神经网络
+    36,  // 第16章 主成分分析
+    38,  // 第17章 聚类分析
+    40   // 第18章 数据科学的Python语言
+  ];
+
+  function goToDay(dayNum) {
+    window.location.href = 'daily-learning-plan.html#day-' + dayNum;
+  }
+
+  // 时间线项目点击跳转
+  var timelineItems = document.querySelectorAll('.timeline-item');
+  timelineItems.forEach(function(item, i) {
+    if (i < weekFirstDays.length) {
+      item.style.cursor = 'pointer';
+      item.addEventListener('click', function(e) {
+        goToDay(weekFirstDays[i]);
+      });
+      item.title = '点击跳转到第' + (i+1) + '周第一天学习（Day ' + weekFirstDays[i] + '）';
+    }
+  });
+
+  // 章节卡片点击跳转
+  var chapterCards = document.querySelectorAll('.chapter-card');
+  chapterCards.forEach(function(card, i) {
+    if (i < chapterFirstDays.length) {
+      card.style.cursor = 'pointer';
+      card.addEventListener('click', function(e) {
+        goToDay(chapterFirstDays[i]);
+      });
+      card.title = '点击跳转到本章学习内容（Day ' + chapterFirstDays[i] + '）';
+    }
+  });
+})();
 </script>
 </body>
 </html>
